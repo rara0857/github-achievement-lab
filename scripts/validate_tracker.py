@@ -24,9 +24,15 @@ def catalog_entries(text: str) -> list[dict[str, object]]:
         for key in ("name", "availability", "status", "note"):
             value = re.search(rf"^    {key}: (.+)$", block, re.MULTILINE)
             fields[key] = value.group(1).strip() if value else None
-        fields["evidence_present"] = re.search(r"^    evidence:", block, re.MULTILINE) is not None
+        evidence_marker = re.search(r"^    evidence:.*$", block, re.MULTILINE)
+        fields["evidence_present"] = evidence_marker is not None
+        evidence_section = ""
+        if evidence_marker:
+            remainder = block[evidence_marker.end() :]
+            next_field = re.search(r"^    [a-zA-Z_]+:", remainder, re.MULTILINE)
+            evidence_section = remainder[: next_field.start()] if next_field else remainder
         fields["evidence"] = re.findall(
-            r"^      - (https://github\.com/[^\s]+)$", block, re.MULTILINE
+            r"^      - (https://github\.com/[^\s]+)$", evidence_section, re.MULTILINE
         )
         entries.append({"id": match.group(1).strip(), "fields": fields})
     return entries
@@ -82,6 +88,21 @@ def format_summary(text: str) -> str:
     return "\n".join(f"{status}: {counts[status]}" for status in STATUS_ORDER)
 
 
+def format_markdown(text: str) -> str:
+    """Render a deterministic catalog table suitable for project notes."""
+    lines = [
+        "| Achievement | Availability | Status | Evidence |",
+        "| --- | --- | --- | ---: |",
+    ]
+    for entry in catalog_entries(text):
+        fields = entry["fields"]
+        lines.append(
+            f"| {fields['name']} | {fields['availability']} | "
+            f"{fields['status']} | {len(fields['evidence'])} |"
+        )
+    return "\n".join(lines)
+
+
 def metadata(text: str) -> dict[str, str]:
     values = {}
     for key in ("account", "last_checked"):
@@ -109,12 +130,16 @@ def main(argv: list[str] | None = None) -> int:
 
     if "--json" in argv:
         print(format_json(text))
+    elif "--markdown" in argv:
+        print(format_markdown(text))
     elif "--summary" in argv:
         print(format_summary(text))
     else:
         statuses = summarize(text)
-        urls = re.findall(r"https://github\.com/[^\s]+", text)
-        print(f"Tracker OK: {sum(statuses.values())} entries, {len(urls)} evidence URLs")
+        evidence_count = sum(
+            len(entry["fields"]["evidence"]) for entry in catalog_entries(text)
+        )
+        print(f"Tracker OK: {sum(statuses.values())} entries, {evidence_count} evidence URLs")
     return 0
 
 

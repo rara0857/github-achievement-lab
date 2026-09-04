@@ -90,6 +90,18 @@ class TrackerTests(unittest.TestCase):
         self.assertEqual(payload["last_checked"], "2026-09-05")
         self.assertEqual(payload["counts"], {"earned": 1, "pending": 1, "planned": 1})
 
+    def test_markdown_report_contains_one_row_per_entry(self):
+        report = MODULE.format_markdown(VALID_TRACKER)
+        rows = report.splitlines()
+        self.assertEqual(rows[0], "| Achievement | Availability | Status | Evidence |")
+        self.assertEqual(len(rows), 5)
+        self.assertIn("| One | current | earned | 1 |", report)
+        self.assertIn("| Three | retired | planned | 0 |", report)
+
+    def test_markdown_report_does_not_count_ci_links_as_evidence(self):
+        report = MODULE.format_markdown(MODULE.TRACKER.read_text(encoding="utf-8"))
+        self.assertIn("| Pull Shark | current | pending | 3 |", report)
+
     def test_invalid_json_command_returns_error_without_payload(self):
         with tempfile.TemporaryDirectory() as directory:
             tracker = Path(directory) / "achievements.yml"

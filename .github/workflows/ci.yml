@@ -21,5 +21,7 @@ jobs:
         run: python scripts/validate_tracker.py --summary
       - name: Export progress JSON
         run: python scripts/validate_tracker.py --json
+      - name: Render Markdown report
+        run: python scripts/validate_tracker.py --markdown
       - name: Run tests
         run: python -m unittest discover -s tests -v
