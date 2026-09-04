@@ -10,6 +10,26 @@ ROOT = Path(__file__).resolve().parents[1]
 TRACKER = ROOT / "achievements.yml"
 STATUS_ORDER = ("earned", "pending", "planned")
 AVAILABILITY_VALUES = {"current", "experimental", "retired"}
+ENTRY_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+def catalog_entries(text: str) -> list[dict[str, object]]:
+    """Extract the small subset of YAML needed for entry-level checks."""
+    starts = list(re.finditer(r"^  - id: (.+)$", text, re.MULTILINE))
+    entries = []
+    for index, match in enumerate(starts):
+        end = starts[index + 1].start() if index + 1 < len(starts) else len(text)
+        block = text[match.start():end]
+        fields = {}
+        for key in ("name", "availability", "status", "note"):
+            value = re.search(rf"^    {key}: (.+)$", block, re.MULTILINE)
+            fields[key] = value.group(1).strip() if value else None
+        fields["evidence_present"] = re.search(r"^    evidence:", block, re.MULTILINE) is not None
+        fields["evidence"] = re.findall(
+            r"^      - (https://github\.com/[^\s]+)$", block, re.MULTILINE
+        )
+        entries.append({"id": match.group(1).strip(), "fields": fields})
+    return entries
 
 
 def validate_text(text: str) -> list[str]:
@@ -26,6 +46,24 @@ def validate_text(text: str) -> list[str]:
     errors.extend(
         f"Unknown availability value: {value}" for value in sorted(unknown_availability)
     )
+
+    entries = catalog_entries(text)
+    if not entries:
+        errors.append("Catalog has no entries")
+    for entry in entries:
+        entry_id = str(entry["id"])
+        fields = entry["fields"]
+        if not ENTRY_ID_RE.fullmatch(entry_id):
+            errors.append(f"Invalid entry id: {entry_id}")
+        for key in ("name", "availability", "status", "note"):
+            if fields[key] is None:
+                errors.append(f"Entry {entry_id} is missing {key}")
+        if not fields["evidence_present"]:
+            errors.append(f"Entry {entry_id} is missing evidence")
+        if fields["status"] == "earned" and not fields["evidence"]:
+            errors.append(f"Entry {entry_id}: earned status requires evidence")
+        if fields["availability"] == "retired" and fields["status"] != "planned":
+            errors.append(f"Entry {entry_id}: retired entries must remain planned")
 
     urls = re.findall(r"https://github\.com/[^\s]+", text)
     if any(url.endswith((".", ",", ")")) for url in urls):
