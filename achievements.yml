@@ -1,0 +1,49 @@
+version: 1
+account: rara0857
+last_checked: 2026-09-05
+
+achievements:
+  - id: quickdraw
+    name: Quickdraw
+    status: earned
+    evidence:
+      - https://github.com/rara0857/AmazonMusicRateSwitcher/issues/6
+    note: Closed within five minutes.
+
+  - id: yolo
+    name: YOLO
+    status: earned
+    evidence:
+      - https://github.com/rara0857/AmazonMusicRateSwitcher/pull/2
+    note: Merged without a review.
+
+  - id: pull-shark
+    name: Pull Shark
+    status: pending
+    evidence:
+      - https://github.com/rara0857/AmazonMusicRateSwitcher/pull/8
+    note: The PR is merged; the profile badge is not visible yet.
+
+  - id: pair-extraordinaire
+    name: Pair Extraordinaire
+    status: planned
+    evidence: []
+    note: Requires a genuine co-authored commit on a merged pull request.
+
+  - id: galaxy-brain
+    name: Galaxy Brain
+    status: planned
+    evidence: []
+    note: Requires accepted answers in repository Discussions.
+
+  - id: starstruck
+    name: Starstruck
+    status: planned
+    evidence: []
+    note: Depends on organic interest in a useful public repository.
+
+  - id: open-sourcerer
+    name: Open Sourcerer
+    status: planned
+    evidence: []
+    note: Criteria are community-reported; only count accepted external contributions.
