@@ -9,6 +9,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 TRACKER = ROOT / "achievements.yml"
 STATUS_ORDER = ("earned", "pending", "planned")
+AVAILABILITY_VALUES = {"current", "experimental", "retired"}
 
 
 def validate_text(text: str) -> list[str]:
@@ -19,6 +20,12 @@ def validate_text(text: str) -> list[str]:
     statuses = set(re.findall(r"^    status: (\w+)$", text, re.MULTILINE))
     unknown = statuses - set(STATUS_ORDER)
     errors.extend(f"Unknown status value: {status}" for status in sorted(unknown))
+
+    availability = set(re.findall(r"^    availability: (\w+)$", text, re.MULTILINE))
+    unknown_availability = availability - AVAILABILITY_VALUES
+    errors.extend(
+        f"Unknown availability value: {value}" for value in sorted(unknown_availability)
+    )
 
     urls = re.findall(r"https://github\.com/[^\s]+", text)
     if any(url.endswith((".", ",", ")")) for url in urls):

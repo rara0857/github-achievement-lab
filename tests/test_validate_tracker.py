@@ -39,6 +39,10 @@ class TrackerTests(unittest.TestCase):
         errors = MODULE.validate_text(VALID_TRACKER.replace("status: pending", "status: unknown"))
         self.assertEqual(errors, ["Unknown status value: unknown"])
 
+    def test_invalid_availability_is_reported(self):
+        tracker = VALID_TRACKER.replace("status: earned", "availability: mystery\n    status: earned")
+        self.assertEqual(MODULE.validate_text(tracker), ["Unknown availability value: mystery"])
+
     def test_command_summary_uses_repository_tracker(self):
         with tempfile.TemporaryDirectory() as directory:
             tracker = Path(directory) / "achievements.yml"

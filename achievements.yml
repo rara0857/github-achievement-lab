@@ -5,6 +5,7 @@ last_checked: 2026-09-05
 achievements:
   - id: quickdraw
     name: Quickdraw
+    availability: current
     status: earned
     evidence:
       - https://github.com/rara0857/AmazonMusicRateSwitcher/issues/6
@@ -12,6 +13,7 @@ achievements:
 
   - id: yolo
     name: YOLO
+    availability: current
     status: earned
     evidence:
       - https://github.com/rara0857/AmazonMusicRateSwitcher/pull/2
@@ -19,6 +21,7 @@ achievements:
 
   - id: pull-shark
     name: Pull Shark
+    availability: current
     status: pending
     evidence:
       - https://github.com/rara0857/AmazonMusicRateSwitcher/pull/8
@@ -32,24 +35,56 @@ achievements:
 
   - id: pair-extraordinaire
     name: Pair Extraordinaire
+    availability: current
     status: planned
     evidence: []
     note: Requires a genuine co-authored commit on a merged pull request.
 
   - id: galaxy-brain
     name: Galaxy Brain
+    availability: current
     status: planned
     evidence: []
     note: Requires accepted answers in repository Discussions.
 
   - id: starstruck
     name: Starstruck
+    availability: current
     status: planned
     evidence: []
     note: Depends on organic interest in a useful public repository.
 
   - id: open-sourcerer
     name: Open Sourcerer
+    availability: experimental
     status: planned
     evidence: []
     note: Criteria are community-reported; only count accepted external contributions.
+
+  - id: public-sponsor
+    name: Public Sponsor
+    availability: current
+    status: planned
+    evidence: []
+    note: Requires an intentional GitHub Sponsors payment decision; never automate this.
+
+  - id: heart-on-your-sleeve
+    name: Heart On Your Sleeve
+    availability: experimental
+    status: planned
+    evidence: []
+    note: Reported by the community; do not treat uncertain reaction thresholds as guaranteed.
+
+  - id: arctic-code-vault-contributor
+    name: Arctic Code Vault Contributor
+    availability: retired
+    status: planned
+    evidence: []
+    note: Historical 2020 snapshot event; no longer actionable.
+
+  - id: mars-2020-helicopter-contributor
+    name: Mars 2020 Helicopter Contributor
+    availability: retired
+    status: planned
+    evidence: []
+    note: Historical NASA Ingenuity event; no longer actionable.
