@@ -20,11 +20,24 @@ account: example
 last_checked: 2026-09-05
 achievements:
   - id: one
+    name: One
+    availability: current
     status: earned
+    evidence:
+      - https://github.com/example/repo/issues/1
+    note: Evidence exists.
   - id: two
+    name: Two
+    availability: current
     status: pending
+    evidence: []
+    note: Waiting for confirmation.
   - id: three
+    name: Three
+    availability: retired
     status: planned
+    evidence: []
+    note: Historical event.
 """
 
 
@@ -40,8 +53,25 @@ class TrackerTests(unittest.TestCase):
         self.assertEqual(errors, ["Unknown status value: unknown"])
 
     def test_invalid_availability_is_reported(self):
-        tracker = VALID_TRACKER.replace("status: earned", "availability: mystery\n    status: earned")
+        tracker = VALID_TRACKER.replace("availability: current", "availability: mystery", 1)
         self.assertEqual(MODULE.validate_text(tracker), ["Unknown availability value: mystery"])
+
+    def test_earned_entry_requires_evidence(self):
+        tracker = VALID_TRACKER.replace(
+            "    evidence:\n      - https://github.com/example/repo/issues/1",
+            "    evidence: []",
+        )
+        self.assertEqual(
+            MODULE.validate_text(tracker),
+            ["Entry one: earned status requires evidence"],
+        )
+
+    def test_retired_entry_must_remain_planned(self):
+        tracker = VALID_TRACKER.replace("availability: retired\n    status: planned", "availability: retired\n    status: pending")
+        self.assertEqual(
+            MODULE.validate_text(tracker),
+            ["Entry three: retired entries must remain planned"],
+        )
 
     def test_command_summary_uses_repository_tracker(self):
         with tempfile.TemporaryDirectory() as directory:
