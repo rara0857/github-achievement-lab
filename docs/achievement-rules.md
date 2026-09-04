@@ -6,6 +6,12 @@ GitHub does not publish a complete, permanent catalog of all profile achievement
 2. **Pending** — a qualifying-looking event exists, but the profile has not confirmed it yet.
 3. **Planned** — no qualifying event has been completed.
 
+Each entry also has an `availability` field:
+
+- `current` means it is treated as an actionable route.
+- `experimental` means the condition is community-reported or unstable.
+- `retired` means it is kept for historical completeness and must not be pursued.
+
 ## Evidence standard
 
 Every earned item needs a stable GitHub URL. For pull-request achievements, keep the PR number, target repository, merge state, and relevant review state. For external repositories, also retain the issue or maintainer discussion that established the contribution scope.
