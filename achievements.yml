@@ -27,11 +27,19 @@ achievements:
       - https://github.com/rara0857/AmazonMusicRateSwitcher/pull/8
       - https://github.com/rara0857/github-achievement-lab/pull/2
       - https://github.com/rara0857/github-achievement-lab/pull/4
+      - https://github.com/rara0857/github-achievement-lab/pull/6
+      - https://github.com/rara0857/github-achievement-lab/pull/8
+      - https://github.com/rara0857/github-achievement-lab/pull/10
+      - https://github.com/rara0857/github-achievement-lab/pull/12
     ci:
       - https://github.com/rara0857/github-achievement-lab/actions/runs/33912359072
       - https://github.com/rara0857/github-achievement-lab/actions/runs/33912529872
+      - https://github.com/rara0857/github-achievement-lab/actions/runs/33912641375
+      - https://github.com/rara0857/github-achievement-lab/actions/runs/33912873462
+      - https://github.com/rara0857/github-achievement-lab/actions/runs/33913109019
+      - https://github.com/rara0857/github-achievement-lab/actions/runs/33913424339
     verified_on: 2026-09-05
-    note: All three PRs are merged and CI-verified; the profile badge is not visible yet.
+    note: All six lab PRs plus the original PR are merged and CI-verified; the profile badge is not visible yet.
 
   - id: pair-extraordinaire
     name: Pair Extraordinaire
