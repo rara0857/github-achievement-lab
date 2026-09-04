@@ -17,3 +17,7 @@ jobs:
           python-version: '3.x'
       - name: Validate tracker
         run: python scripts/validate_tracker.py
+      - name: Print progress summary
+        run: python scripts/validate_tracker.py --summary
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
