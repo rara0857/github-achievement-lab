@@ -22,7 +22,13 @@ achievements:
     status: pending
     evidence:
       - https://github.com/rara0857/AmazonMusicRateSwitcher/pull/8
-    note: The PR is merged; the profile badge is not visible yet.
+      - https://github.com/rara0857/github-achievement-lab/pull/2
+      - https://github.com/rara0857/github-achievement-lab/pull/4
+    ci:
+      - https://github.com/rara0857/github-achievement-lab/actions/runs/33912359072
+      - https://github.com/rara0857/github-achievement-lab/actions/runs/33912529872
+    verified_on: 2026-09-05
+    note: All three PRs are merged and CI-verified; the profile badge is not visible yet.
 
   - id: pair-extraordinaire
     name: Pair Extraordinaire

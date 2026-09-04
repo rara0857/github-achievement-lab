@@ -28,4 +28,4 @@ GitHub Actions 會在每次 push 與 pull request 自動執行相同檢查。
 
 ## 狀態
 
-詳細進度放在 [`achievements.yml`](achievements.yml)。成就只有在 GitHub profile 顯示後才會標記為 `earned`；延遲中的事件會保留證據但維持 `pending`。
+詳細進度放在 [`achievements.yml`](achievements.yml)。成就只有在 GitHub profile 顯示後才會標記為 `earned`；延遲中的事件會保留 PR、CI 與查核日期，但維持 `pending`。
