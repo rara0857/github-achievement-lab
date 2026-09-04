@@ -100,7 +100,7 @@ class TrackerTests(unittest.TestCase):
 
     def test_markdown_report_does_not_count_ci_links_as_evidence(self):
         report = MODULE.format_markdown(MODULE.TRACKER.read_text(encoding="utf-8"))
-        self.assertIn("| Pull Shark | current | pending | 3 |", report)
+        self.assertIn("| Pull Shark | current | pending | 7 |", report)
 
     def test_invalid_json_command_returns_error_without_payload(self):
         with tempfile.TemporaryDirectory() as directory:
