@@ -1,6 +1,7 @@
 """Validate the small, dependency-free achievement tracker."""
 
 from pathlib import Path
+import json
 import re
 import sys
 
@@ -36,6 +37,23 @@ def format_summary(text: str) -> str:
     return "\n".join(f"{status}: {counts[status]}" for status in STATUS_ORDER)
 
 
+def metadata(text: str) -> dict[str, str]:
+    values = {}
+    for key in ("account", "last_checked"):
+        match = re.search(rf"^{key}:\s*(.+)$", text, re.MULTILINE)
+        if match:
+            values[key] = match.group(1).strip()
+    return values
+
+
+def format_json(text: str) -> str:
+    payload = {
+        **metadata(text),
+        "counts": summarize(text),
+    }
+    return json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
+
+
 def main(argv: list[str] | None = None) -> int:
     argv = sys.argv[1:] if argv is None else argv
     text = TRACKER.read_text(encoding="utf-8")
@@ -44,7 +62,9 @@ def main(argv: list[str] | None = None) -> int:
         print("\n".join(errors))
         return 1
 
-    if "--summary" in argv:
+    if "--json" in argv:
+        print(format_json(text))
+    elif "--summary" in argv:
         print(format_summary(text))
     else:
         statuses = summarize(text)

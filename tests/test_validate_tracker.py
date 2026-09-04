@@ -1,4 +1,7 @@
 import importlib.util
+import contextlib
+import io
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -46,6 +49,28 @@ class TrackerTests(unittest.TestCase):
                 self.assertEqual(MODULE.main(["--summary"]), 0)
             finally:
                 MODULE.TRACKER = original
+
+    def test_json_output_contains_metadata_and_counts(self):
+        payload = json.loads(MODULE.format_json(VALID_TRACKER))
+        self.assertEqual(payload["account"], "example")
+        self.assertEqual(payload["last_checked"], "2026-09-05")
+        self.assertEqual(payload["counts"], {"earned": 1, "pending": 1, "planned": 1})
+
+    def test_invalid_json_command_returns_error_without_payload(self):
+        with tempfile.TemporaryDirectory() as directory:
+            tracker = Path(directory) / "achievements.yml"
+            tracker.write_text(VALID_TRACKER.replace("status: pending", "status: unknown"), encoding="utf-8")
+            original = MODULE.TRACKER
+            output = io.StringIO()
+            try:
+                MODULE.TRACKER = tracker
+                with contextlib.redirect_stdout(output):
+                    result = MODULE.main(["--json"])
+            finally:
+                MODULE.TRACKER = original
+            self.assertEqual(result, 1)
+            self.assertIn("Unknown status value: unknown", output.getvalue())
+            self.assertNotIn('"counts"', output.getvalue())
 
 
 if __name__ == "__main__":

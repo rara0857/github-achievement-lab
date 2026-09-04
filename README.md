@@ -21,6 +21,7 @@
 ```powershell
 python scripts/validate_tracker.py
 python scripts/validate_tracker.py --summary
+python scripts/validate_tracker.py --json
 ```
 
 GitHub Actions 會在每次 push 與 pull request 自動執行相同檢查。

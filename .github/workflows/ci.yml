@@ -19,5 +19,7 @@ jobs:
         run: python scripts/validate_tracker.py
       - name: Print progress summary
         run: python scripts/validate_tracker.py --summary
+      - name: Export progress JSON
+        run: python scripts/validate_tracker.py --json
       - name: Run tests
         run: python -m unittest discover -s tests -v
